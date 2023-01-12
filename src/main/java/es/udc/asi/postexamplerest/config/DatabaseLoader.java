@@ -15,7 +15,7 @@ import es.udc.asi.postexamplerest.model.service.UserService;
 
 @Configuration
 public class DatabaseLoader {
-	/*
+
   @Autowired
   private UserDao userDAO;
 
@@ -26,7 +26,7 @@ public class DatabaseLoader {
   private EventDao eventDAO;
 
   @Autowired
-  private TagDao tagDAO;
+  private CategoryDao categoryDAO;
 
   /*
    * Para hacer que la carga de datos sea transacional, hay que cargar el propio
@@ -34,7 +34,7 @@ public class DatabaseLoader {
    * PostConstruct (ni similares) se tienen en cuenta las anotaciones de
    * transaciones.
    */
-	/*
+
   @Transactional(readOnly = false, rollbackFor = Exception.class)
   public void loadData() throws UserLoginExistsException, InterruptedException {
     userService.registerUser("pepe", "pepe", true);
@@ -46,34 +46,39 @@ public class DatabaseLoader {
     userDAO.update(pedro);
     userService.registerUser("ramón", "ramón");
 
-    Tag news = new Tag("news");
-    Tag podcast = new Tag("podcast");
-    Tag tech = new Tag("tech");
+    Category sports = new Category("sports");
+    Category cultural = new Category("cultural");
+    Category art = new Category("art");
 
-    tagDAO.create(news);
-    tagDAO.create(podcast);
-    tagDAO.create(tech);
+    categoryDAO.create(sports);
+    categoryDAO.create(cultural);
+    categoryDAO.create(art);
 
-    Post post = new Post("Texto del primer post", userDAO.findByLogin("pepe"));
-    post.getTags().add(news);
-    post.getTags().add(podcast);
-    postDAO.create(post);
+    Event event = new Event("football match", userDAO.findByLogin("pepe"));
+    event.setCategory(sports);
+    eventDAO.create(event);
     Thread.sleep(2000);
-    post = new Post("Texto del segundo post", userDAO.findByLogin("maria"));
-    post.getTags().add(news);
-    post.getTags().add(tech);
-    postDAO.create(post);
+    
+    event = new Event("event 2", userDAO.findByLogin("maria"));
+    event.setCategory(cultural);
+    eventDAO.create(event);
     Thread.sleep(2000);
-    post = new Post("Texto del tercero post", userDAO.findByLogin("maria"));
-    postDAO.create(post);
+    
+    event = new Event("paintings expo", userDAO.findByLogin("maria"));
+    event.setCategory(art);
+    eventDAO.create(event);
     Thread.sleep(2000);
-    post = new Post("Texto del cuarto post", userDAO.findByLogin("maria"));
-    postDAO.create(post);
+    
+    event = new Event("event 4", userDAO.findByLogin("maria"));
+    event.setCategory(art);
+    eventDAO.create(event);
     Thread.sleep(2000);
-    post = new Post("Texto del quinto post", userDAO.findByLogin("pepe"));
-    postDAO.create(post);
+    
+    event = new Event("event 5", userDAO.findByLogin("pepe"));
+    eventDAO.create(event);
     Thread.sleep(2000);
-    post = new Post("Texto del sexto post", userDAO.findByLogin("pepe"));
-    postDAO.create(post);
-  }*/
+    
+    event = new Event("event 6", userDAO.findByLogin("pepe"));
+    eventDAO.create(event);
+  }
 }

@@ -23,7 +23,7 @@ public class RestExampleApplication {
   public static void main(String[] args) {
     SpringApplication.run(RestExampleApplication.class, args);
   }
-/*
+
   @PostConstruct
   public void init() throws InterruptedException {
     try {
@@ -31,5 +31,5 @@ public class RestExampleApplication {
     } catch (UserLoginExistsException e) {
       logger.error(e.getMessage(), e);
     }
-  }*/
+  }
 }
