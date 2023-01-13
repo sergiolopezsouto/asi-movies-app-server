@@ -6,8 +6,13 @@ import es.udc.asi.postexamplerest.model.domain.Event;
 import es.udc.asi.postexamplerest.model.service.dto.EventSortType;
 
 public interface EventDao {
-  List<Event> findAll(String filter, String category, EventSortType sort);
 
+/*	
+  List<Event> findAll(String filter, String category, EventSortType sort);
+*/
+	
+  List<Event> findAll();
+	
   Event findById(Long id);
 
   void create(Event event);

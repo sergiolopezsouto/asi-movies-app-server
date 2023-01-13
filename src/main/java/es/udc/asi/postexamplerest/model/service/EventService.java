@@ -45,7 +45,7 @@ public class EventService {
   @Autowired
   private UserService userService;
 
-  
+  /*
   public List<EventDTO> findAll(String filter, String category, EventSortType sort) {
     Stream<Event> events = eventDAO.findAll(filter, category, sort).stream();
     if (!SecurityUtils.getCurrentUserIsAdmin()) {
@@ -53,6 +53,16 @@ public class EventService {
     }
     return events.map(event -> new EventDTO(event)).collect(Collectors.toList());
   }
+  */
+  
+  public List<EventDTO> findAll() {
+    Stream<Event> events = eventDAO.findAll().stream();
+    if (!SecurityUtils.getCurrentUserIsAdmin()) {
+      events = events.filter(e -> e.getAuthor().isActive());
+    }
+    return events.map(event -> new EventDTO(event)).collect(Collectors.toList());
+  }
+
 
   public EventDTO findById(Long id) throws NotFoundException {
     Event event = eventDAO.findById(id);
@@ -81,6 +91,7 @@ public class EventService {
     return new EventDTO(bdEvent);
   }
 
+  /* lo tuve que comentar caundo cambié category por categoryDTO en eventDTO
   @PreAuthorize("hasAuthority('ADMIN')")
   @Transactional(readOnly = false, rollbackFor = Exception.class)
   public EventDTO update(EventDTO event) throws NotFoundException {
@@ -94,6 +105,7 @@ public class EventService {
     eventDAO.update(bdEvent);
     return new EventDTO(bdEvent);
   }
+  */
 
   @PreAuthorize("isAuthenticated()")
   @Transactional(readOnly = false, rollbackFor = Exception.class)

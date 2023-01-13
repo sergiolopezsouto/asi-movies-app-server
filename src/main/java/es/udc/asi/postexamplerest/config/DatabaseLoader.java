@@ -53,7 +53,7 @@ public class DatabaseLoader {
     categoryDAO.create(sports);
     categoryDAO.create(cultural);
     categoryDAO.create(art);
-
+    
     Event event = new Event("football match", userDAO.findByLogin("pepe"));
     event.setCategory(sports);
     eventDAO.create(event);
@@ -75,10 +75,12 @@ public class DatabaseLoader {
     Thread.sleep(2000);
     
     event = new Event("event 5", userDAO.findByLogin("pepe"));
+    event.setCategory(art);
     eventDAO.create(event);
     Thread.sleep(2000);
     
     event = new Event("event 6", userDAO.findByLogin("pepe"));
+    event.setCategory(art);
     eventDAO.create(event);
   }
 }

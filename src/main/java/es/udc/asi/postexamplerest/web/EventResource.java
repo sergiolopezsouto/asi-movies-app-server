@@ -41,10 +41,17 @@ public class EventResource {
   @Autowired
   private EventService eventService;
 
+  /*
   @GetMapping
   public List<EventDTO> findAll(@RequestParam(required = false) String query, @RequestParam(required = false) String category,
       @RequestParam(required = false) EventSortType sort) {
     return eventService.findAll(query, category, sort);
+  }
+  */
+  
+  @GetMapping
+  public List<EventDTO> findAll() {
+    return eventService.findAll();
   }
 
   @GetMapping("/{id}")
@@ -89,7 +96,7 @@ public class EventResource {
 
     return eventService.create(event);
   }
-
+/*  lo tuve que comentar caundo cambié category por categoryDTO en eventDTO
   @PutMapping("/{id}")
   public EventDTO update(@PathVariable Long id, @RequestBody @Valid EventDTO event, Errors errors)
       throws IdAndBodyNotMatchingOnUpdateException, RequestBodyNotValidException, NotFoundException {
@@ -102,6 +109,7 @@ public class EventResource {
     }
     return eventService.update(event);
   }
+  */
 
   @DeleteMapping("/{id}")
   public void delete(@PathVariable Long id) throws NotFoundException, OperationNotAllowed {

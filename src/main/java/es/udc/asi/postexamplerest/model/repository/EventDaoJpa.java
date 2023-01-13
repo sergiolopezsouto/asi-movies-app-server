@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import es.udc.asi.postexamplerest.model.domain.Category;
 import es.udc.asi.postexamplerest.model.domain.Event;
 import es.udc.asi.postexamplerest.model.repository.util.GenericDaoJpa;
 import es.udc.asi.postexamplerest.model.service.dto.EventSortType;
@@ -13,6 +14,7 @@ import javax.persistence.TypedQuery;
 @Repository
 public class EventDaoJpa extends GenericDaoJpa implements EventDao {
 
+/*	
   @Override
   public List<Event> findAll(String filter, String category, EventSortType sort) {
     Boolean hasFilter = filter != null;
@@ -66,6 +68,12 @@ public class EventDaoJpa extends GenericDaoJpa implements EventDao {
     }
 
     return query.getResultList();
+  }
+*/
+	
+  @Override
+  public List<Event> findAll() {
+	return entityManager.createQuery("from Event", Event.class).getResultList();
   }
 
   @Override

@@ -12,12 +12,22 @@ import es.udc.asi.postexamplerest.model.domain.Event;
 public class EventDTO {
   private Long id;
   @NotEmpty
-  private String description;
-  @NotNull
+  private String title;
+  public String getTitle() {
+	return title;
+}
+
+public void setTitle(String title) {
+	this.title = title;
+}
+
+@NotNull
   private UserDTOPublic author;
-  private Category category;
+  private CategoryDTO category;
+  private String categoryName;
+  private String description;
   private Boolean hasImage = false;
-  private LocalDateTime timestamp;
+  private LocalDateTime date;
 
   
   public EventDTO() {
@@ -25,13 +35,16 @@ public class EventDTO {
 
   public EventDTO(Event event) {
     this.id = event.getId();
+    this.title = event.getTitle();
     this.description = event.getDescription();
     this.author = new UserDTOPublic(event.getAuthor());
-    this.category= event.getCategory();
+    this.categoryName = event.getCategory().getName();
     if (event.getImagePath() != null) {
       this.hasImage = true;
     }
-    this.timestamp = event.getTimestamp();
+    // this.category = event.getCategory(); no sé por que no va
+    this.category = new CategoryDTO(event.getCategory()); 
+    this.date = event.getDate();
   }
 
 
@@ -59,11 +72,11 @@ public class EventDTO {
     this.author = author;
   }
 
-  public Category getCategory() {
+  public CategoryDTO getCategory() {
 	return category;
 }
 
-  public void setCategory(Category category) {
+  public void setCategory(CategoryDTO category) {
 	this.category = category;
   }
 
@@ -71,7 +84,7 @@ public class EventDTO {
     return hasImage;
   }
 	
-  public LocalDateTime getTimestamp() {
-    return timestamp;
+  public LocalDateTime getDate() {
+    return date;
   }
 }
