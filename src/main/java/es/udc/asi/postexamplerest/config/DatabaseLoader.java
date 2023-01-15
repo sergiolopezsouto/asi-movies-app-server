@@ -1,5 +1,7 @@
 package es.udc.asi.postexamplerest.config;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,16 +58,19 @@ public class DatabaseLoader {
     
     Event event = new Event("football match", userDAO.findByLogin("pepe"));
     event.setCategory(sports);
+    event.setDate(LocalDateTime.now());
     eventDAO.create(event);
     Thread.sleep(2000);
     
     event = new Event("event 2", userDAO.findByLogin("maria"));
     event.setCategory(cultural);
+    event.setDate(LocalDateTime.now());
     eventDAO.create(event);
     Thread.sleep(2000);
     
     event = new Event("paintings expo", userDAO.findByLogin("maria"));
     event.setCategory(art);
+    event.setDate(LocalDateTime.now().plusDays(1)); // fijar a mañana
     eventDAO.create(event);
     Thread.sleep(2000);
     
