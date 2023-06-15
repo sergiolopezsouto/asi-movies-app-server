@@ -77,16 +77,16 @@ public class EventService {
   @PreAuthorize("isAuthenticated()")
   @Transactional(readOnly = false)
   public EventDTO create(EventDTO event) throws OperationNotAllowed {
-	Event bdEvent = new Event(event.getDescription());
+    Event bdEvent = new Event(event.getDescription());
     UserDTOPrivate currentUser = userService.getCurrentUserWithAuthority();
-    if (currentUser.getAuthority().equals("ADMIN")) {
+
+    // Ahora no se requiere ser ADMIN para establecer el autor de un evento
+    if (event.getAuthor() != null) {
       bdEvent.setAuthor(userDAO.findById(event.getAuthor().getId()));
     } else {
-      if (event.getAuthor() != null) {
-        throw new OperationNotAllowed("Non admin users cannot set the author of a event (property author should be null)");
-      }
       bdEvent.setAuthor(userDAO.findById(currentUser.getId()));
     }
+
     eventDAO.create(bdEvent);
     return new EventDTO(bdEvent);
   }

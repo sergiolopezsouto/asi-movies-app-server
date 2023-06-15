@@ -60,7 +60,7 @@ public class Event {
     this.author = author;
   }
 
-  
+ 
   
   public Long getId() {
     return id;

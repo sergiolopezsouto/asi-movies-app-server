@@ -34,18 +34,22 @@ public void setTitle(String title) {
   }
 
   public EventDTO(Event event) {
-    this.id = event.getId();
-    this.title = event.getTitle();
-    this.description = event.getDescription();
-    this.author = new UserDTOPublic(event.getAuthor());
-    this.categoryName = event.getCategory().getName();
-    if (event.getImagePath() != null) {
-      this.hasImage = true;
-    }
-    // this.category = event.getCategory(); no sé por que no va
-    this.category = new CategoryDTO(event.getCategory()); 
-    this.date = event.getDate();
-  }
+	    this.id = event.getId();
+	    this.title = event.getTitle();
+	    this.description = event.getDescription();
+	    this.author = new UserDTOPublic(event.getAuthor());
+
+	    if (event.getCategory() != null) {
+	        this.categoryName = event.getCategory().getName();
+	        this.category = new CategoryDTO(event.getCategory()); 
+	    }
+
+	    if (event.getImagePath() != null) {
+	      this.hasImage = true;
+	    }
+
+	    this.date = event.getDate();
+	}
 
 
   public Long getId() {

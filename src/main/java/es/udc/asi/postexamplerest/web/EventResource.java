@@ -59,33 +59,32 @@ public class EventResource {
     return eventService.findById(id);
   }
 
-  @GetMapping("/{id}/image")
-  @ResponseStatus(HttpStatus.OK)
-  public void getMovieImageById(@PathVariable Long id, HttpServletResponse response)
-      throws InstanceNotFoundException, ModelException, IOException {
-    ImageDTO image = eventService.getEventImageById(id);
+	/*
+	 * @GetMapping("/{id}/image")
+	 * 
+	 * @ResponseStatus(HttpStatus.OK) public void getMovieImageById(@PathVariable
+	 * Long id, HttpServletResponse response) throws InstanceNotFoundException,
+	 * ModelException, IOException { ImageDTO image =
+	 * eventService.getEventImageById(id);
+	 * 
+	 * if (image == null) { response.sendError(404); // esto se podría hacer también
+	 * con una excepción return; }
+	 * 
+	 * try { response.setContentType(image.getMediaType());
+	 * response.setHeader("Content-disposition", "filename=" + image.getFilename());
+	 * IOUtils.copy(image.getInputStream(), response.getOutputStream()); } catch
+	 * (IOException e) { e.printStackTrace(); } }
+	 */
 
-    if (image == null) {
-      response.sendError(404); // esto se podría hacer también con una excepción
-      return;
-    }
-
-    try {
-      response.setContentType(image.getMediaType());
-      response.setHeader("Content-disposition", "filename=" + image.getFilename());
-      IOUtils.copy(image.getInputStream(), response.getOutputStream());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  @PostMapping("/{id}/image")
-  @ResponseStatus(HttpStatus.OK)
-  public void saveMovieImageById(@PathVariable Long id, @RequestParam MultipartFile file, HttpServletResponse response)
-      throws InstanceNotFoundException, ModelException {
-
-    eventService.saveEventImageById(id, file);
-  }
+	/*
+	 * @PostMapping("/{id}/image")
+	 * 
+	 * @ResponseStatus(HttpStatus.OK) public void saveMovieImageById(@PathVariable
+	 * Long id, @RequestParam MultipartFile file, HttpServletResponse response)
+	 * throws InstanceNotFoundException, ModelException {
+	 * 
+	 * eventService.saveEventImageById(id, file); }
+	 */
 
   @PostMapping
   public EventDTO create(@RequestBody @Valid EventDTO event, Errors errors)
