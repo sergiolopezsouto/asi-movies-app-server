@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.udc.asi.postexamplerest.model.domain.Category;
 import es.udc.asi.postexamplerest.model.domain.Event;
 import es.udc.asi.postexamplerest.model.exception.ModelException;
 import es.udc.asi.postexamplerest.model.exception.NotFoundException;
@@ -72,24 +73,58 @@ public class EventService {
     return new EventDTO(event);
   }
 
-  // Con estas anotaciones evitamos que usuarios no autorizados accedan a ciertas
-  // funcionalidades
+  // Con estas anotaciones evitamos que usuarios no autorizados accedan a ciertas funcionalidades
+//  @PreAuthorize("isAuthenticated()")
+//  @Transactional(readOnly = false)
+//  public EventDTO create(EventDTO event) throws OperationNotAllowed {
+//    Event bdEvent = new Event(event.getDescription());
+//    UserDTOPrivate currentUser = userService.getCurrentUserWithAuthority();
+//
+//    // Ahora no se requiere ser ADMIN para establecer el autor de un evento 
+//    if (event.getAuthor() != null) {
+//      bdEvent.setAuthor(userDAO.findById(event.getAuthor().getId()));
+//    } else {
+//      bdEvent.setAuthor(userDAO.findById(currentUser.getId()));
+//    }
+//
+//    eventDAO.create(bdEvent);
+//    return new EventDTO(bdEvent);
+//  }
+  
   @PreAuthorize("isAuthenticated()")
   @Transactional(readOnly = false)
   public EventDTO create(EventDTO event) throws OperationNotAllowed {
-    Event bdEvent = new Event(event.getDescription());
-    UserDTOPrivate currentUser = userService.getCurrentUserWithAuthority();
+      Event bdEvent = new Event();
+      UserDTOPrivate currentUser = userService.getCurrentUserWithAuthority();
 
-    // Ahora no se requiere ser ADMIN para establecer el autor de un evento
-    if (event.getAuthor() != null) {
-      bdEvent.setAuthor(userDAO.findById(event.getAuthor().getId()));
-    } else {
-      bdEvent.setAuthor(userDAO.findById(currentUser.getId()));
-    }
+      // Ahora no se requiere ser ADMIN para establecer el autor de un evento
+      if (event.getAuthor() != null) {
+          bdEvent.setAuthor(userDAO.findById(event.getAuthor().getId()));
+      } else {
+          bdEvent.setAuthor(userDAO.findById(currentUser.getId()));
+      }
 
-    eventDAO.create(bdEvent);
-    return new EventDTO(bdEvent);
+      // Configurar los demás campos de Event
+      bdEvent.setTitle(event.getTitle());
+      bdEvent.setDate(event.getDate());
+      bdEvent.setPlace(event.getPlace());
+      bdEvent.setDescription(event.getDescription());
+//      bdEvent.setImagePath(event.getImage());
+
+      // Configurar la categoría si está presente en el DTO
+      if (event.getCategory() != null) {
+          Category category = categoryDAO.findById(event.getCategory().getId());
+          if (category != null) {
+              bdEvent.setCategory(category);
+          }
+      }
+
+      eventDAO.create(bdEvent);
+      return new EventDTO(bdEvent);
   }
+
+  
+  
 
   /* lo tuve que comentar caundo cambié category por categoryDTO en eventDTO
   @PreAuthorize("hasAuthority('ADMIN')")
@@ -106,7 +141,7 @@ public class EventService {
     return new EventDTO(bdEvent);
   }
   */
-
+  
   @PreAuthorize("isAuthenticated()")
   @Transactional(readOnly = false, rollbackFor = Exception.class)
   public void deleteById(Long id) throws NotFoundException, OperationNotAllowed {
@@ -116,38 +151,37 @@ public class EventService {
     }
 
     UserDTOPrivate currentUser = userService.getCurrentUserWithAuthority();
-    if (!currentUser.getId().equals(event.getAuthor().getId())) {
-      throw new OperationNotAllowed("Current user is not the event creator");
+    if (!currentUser.getId().equals(event.getAuthor().getId()) && !currentUser.getAuthority().equals("ADMIN")) {
+      throw new OperationNotAllowed("Current user is not the event creator or an admin");
     }
 
     LocalDateTime halfAnHourAgo = LocalDateTime.now().minusMinutes(30);
-    if (event.getTimestamp().isBefore(halfAnHourAgo)) {
+    if (event.getTimestamp().isBefore(halfAnHourAgo) && !currentUser.getAuthority().equals("ADMIN")) {
       throw new OperationNotAllowed("More than half an hour has passed since the event creation");
     }
 
     eventDAO.deleteById(id);
   }
 
-  @Transactional(readOnly = false, rollbackFor = Exception.class)
-  public void saveEventImageById(Long id, MultipartFile file) throws InstanceNotFoundException, ModelException {
 
-    Event event = eventDAO.findById(id);
-    if (event == null)
-      throw new NotFoundException(id.toString(), Event.class);
+//  @Transactional(readOnly = false, rollbackFor = Exception.class)
+//  public void saveEventImageById(Long id, MultipartFile file) throws InstanceNotFoundException, ModelException {
+//
+//    Event event = eventDAO.findById(id);
+//    if (event == null)
+//      throw new NotFoundException(id.toString(), Event.class);
+//
+//    String filePath = imageService.saveImage(file, event.getId());
+//    event.setImagePath(filePath);
+//    eventDAO.update(event);
+//  }
 
-    String filePath = imageService.saveImage(file, event.getId());
-    event.setImagePath(filePath);
-    eventDAO.update(event);
-  }
-
-  public ImageDTO getEventImageById(Long id) throws InstanceNotFoundException, ModelException {
-    Event event = eventDAO.findById(id);
-    if (event == null || !SecurityUtils.getCurrentUserIsAdmin() && !event.getAuthor().isActive()) {
-      throw new NotFoundException(id.toString(), Event.class);
-    }
-    if (event.getImagePath() == null) {
-      return null;
-    }
-    return imageService.getImage(event.getImagePath(), event.getId());
-  }
+	/*
+	 * public ImageDTO getEventImageById(Long id) throws InstanceNotFoundException,
+	 * ModelException { Event event = eventDAO.findById(id); if (event == null ||
+	 * !SecurityUtils.getCurrentUserIsAdmin() && !event.getAuthor().isActive()) {
+	 * throw new NotFoundException(id.toString(), Event.class); } if
+	 * (event.getImagePath() == null) { return null; } return
+	 * imageService.getImage(event.getImagePath(), event.getId()); }
+	 */
 }

@@ -26,6 +26,7 @@ public void setTitle(String title) {
   private CategoryDTO category;
   private String categoryName;
   private String description;
+  private String place;
   private Boolean hasImage = false;
   private LocalDateTime date;
 
@@ -45,10 +46,12 @@ public void setTitle(String title) {
 	    }
 
 	    if (event.getImagePath() != null) {
+	    	
 	      this.hasImage = true;
 	    }
 
 	    this.date = event.getDate();
+	    this.place = event.getPlace(); 
 	}
 
 
@@ -90,5 +93,9 @@ public void setTitle(String title) {
 	
   public LocalDateTime getDate() {
     return date;
+  }
+
+  public String getPlace() {
+	return place;
   }
 }

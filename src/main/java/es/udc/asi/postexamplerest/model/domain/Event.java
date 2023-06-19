@@ -59,8 +59,6 @@ public class Event {
     this(title);
     this.author = author;
   }
-
- 
   
   public Long getId() {
     return id;
