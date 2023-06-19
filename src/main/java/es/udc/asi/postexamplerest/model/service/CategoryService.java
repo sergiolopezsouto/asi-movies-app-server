@@ -31,6 +31,21 @@ public class CategoryService {
         .collect(Collectors.toList());
   }
 
+//  @PreAuthorize("hasAuthority('ADMIN')")
+//  @Transactional(readOnly = false)
+//  public void deleteById(Long id) throws NotFoundException {
+//    List<Event> events = eventDAO.findAllByCategory(id);
+//    Category theCategory = categoryDAO.findById(id);
+//    if (theCategory == null) {
+//      throw new NotFoundException(id.toString(), Category.class);
+//    }
+//    events.forEach(event -> {
+//      event.setCategory(null);
+//      eventDAO.update(event);
+//    });
+//    categoryDAO.delete(theCategory);
+//  }
+  
   @PreAuthorize("hasAuthority('ADMIN')")
   @Transactional(readOnly = false)
   public void deleteById(Long id) throws NotFoundException {
@@ -45,6 +60,7 @@ public class CategoryService {
     });
     categoryDAO.delete(theCategory);
   }
+
 
   @PreAuthorize("hasAuthority('ADMIN')")
   @Transactional(readOnly = false)

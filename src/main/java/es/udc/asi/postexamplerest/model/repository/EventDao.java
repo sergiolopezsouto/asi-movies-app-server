@@ -22,4 +22,7 @@ public interface EventDao {
   void deleteById(Long id);
 
   List<Event> findAllByCategory(Long categoryId);
+  
+//  List<Event> findAllByCategory(Long categoryId);
+
 }

@@ -97,10 +97,17 @@ public class EventDaoJpa extends GenericDaoJpa implements EventDao {
     delete(event);
   }
 
+//  @Override
+//  public List<Event> findAllByCategory(Long categoryId) {
+//    return entityManager.createQuery("select e from Event e join e.categories ec where ec.id = :categoryId", Event.class)
+//        .setParameter("categoryId", categoryId).getResultList();
+//  }
+  
   @Override
   public List<Event> findAllByCategory(Long categoryId) {
-    return entityManager.createQuery("select e from Event e join e.categories ec where ec.id = :categoryId", Event.class)
-        .setParameter("categoryId", categoryId).getResultList();
+    return entityManager.createQuery("SELECT e FROM Event e JOIN e.category c WHERE c.id = :categoryId", Event.class)
+          .setParameter("categoryId", categoryId)
+          .getResultList();
   }
 
   private void delete(Event event) {
