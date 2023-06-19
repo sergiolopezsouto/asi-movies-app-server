@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.management.InstanceNotFoundException;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -123,24 +124,71 @@ public class EventService {
       return new EventDTO(bdEvent);
   }
 
-  
-  
 
-  /* lo tuve que comentar caundo cambié category por categoryDTO en eventDTO
-  @PreAuthorize("hasAuthority('ADMIN')")
+//  @PreAuthorize("hasAuthority('ADMIN')")
+//  @Transactional(readOnly = false, rollbackFor = Exception.class)
+//  public EventDTO update(EventDTO event) throws NotFoundException {
+//    Event bdEvent = eventDAO.findById(event.getId());
+//    if (bdEvent == null) {
+//      throw new NotFoundException(event.getId().toString(), Event.class);
+//    }
+//    bdEvent.setTitle(event.getTitle());
+//    bdEvent.setDescription(event.getDescription());
+//    bdEvent.setPlace(event.getPlace());
+//    bdEvent.setDate(event.getDate());
+//
+//    // Configurar la categoría si está presente en el DTO
+//    if (event.getCategory() != null) {
+//      Category category = categoryDAO.findById(event.getCategory().getId());
+//      if (category != null) {
+//        bdEvent.setCategory(category);
+//      }
+//    } else {
+//      bdEvent.setCategory(null);
+//    }
+//
+//    eventDAO.update(bdEvent);
+//    return new EventDTO(bdEvent);
+//  }
+  
+  
   @Transactional(readOnly = false, rollbackFor = Exception.class)
-  public EventDTO update(EventDTO event) throws NotFoundException {
+  public EventDTO update(EventDTO event) throws NotFoundException, OperationNotAllowed {
     Event bdEvent = eventDAO.findById(event.getId());
     if (bdEvent == null) {
       throw new NotFoundException(event.getId().toString(), Event.class);
     }
+
+    UserDTOPrivate currentUser = userService.getCurrentUserWithAuthority();
+
+    // Verificar si el usuario actual es el propietario del evento o tiene el rol de administrador
+    if (!currentUser.getAuthority().equals("ADMIN") && bdEvent.getAuthor().getId() != currentUser.getId()) {
+      throw new OperationNotAllowed("Only the owner or an administrator can update the event");
+    }
+
+    bdEvent.setTitle(event.getTitle());
     bdEvent.setDescription(event.getDescription());
-    bdEvent.setAuthor(userDAO.findById(event.getAuthor().getId()));
-    bdEvent.setCategory(event.getCategory());
+    bdEvent.setPlace(event.getPlace());
+    bdEvent.setDate(event.getDate());
+
+    // Configurar la categoría si está presente en el DTO
+    if (event.getCategory() != null) {
+      Category category = categoryDAO.findById(event.getCategory().getId());
+      if (category != null) {
+        bdEvent.setCategory(category);
+      }
+    } else {
+      bdEvent.setCategory(null);
+    }
+
     eventDAO.update(bdEvent);
     return new EventDTO(bdEvent);
   }
-  */
+
+
+
+
+
   
   @PreAuthorize("isAuthenticated()")
   @Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -162,6 +210,7 @@ public class EventService {
 
     eventDAO.deleteById(id);
   }
+
 
 
 //  @Transactional(readOnly = false, rollbackFor = Exception.class)

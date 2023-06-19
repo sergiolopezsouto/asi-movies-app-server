@@ -23,6 +23,4 @@ public interface EventDao {
 
   List<Event> findAllByCategory(Long categoryId);
   
-//  List<Event> findAllByCategory(Long categoryId);
-
 }

@@ -30,21 +30,6 @@ public class CategoryService {
     return categoryDAO.findAll().stream().sorted(Comparator.comparing(Category::getName)).map(CategoryDTO::new)
         .collect(Collectors.toList());
   }
-
-//  @PreAuthorize("hasAuthority('ADMIN')")
-//  @Transactional(readOnly = false)
-//  public void deleteById(Long id) throws NotFoundException {
-//    List<Event> events = eventDAO.findAllByCategory(id);
-//    Category theCategory = categoryDAO.findById(id);
-//    if (theCategory == null) {
-//      throw new NotFoundException(id.toString(), Category.class);
-//    }
-//    events.forEach(event -> {
-//      event.setCategory(null);
-//      eventDAO.update(event);
-//    });
-//    categoryDAO.delete(theCategory);
-//  }
   
   @PreAuthorize("hasAuthority('ADMIN')")
   @Transactional(readOnly = false)

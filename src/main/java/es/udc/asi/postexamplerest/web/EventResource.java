@@ -95,10 +95,11 @@ public class EventResource {
 
     return eventService.create(event);
   }
-/*  lo tuve que comentar caundo cambié category por categoryDTO en eventDTO
+  
+  // lo tuve que comentar caundo cambié category por categoryDTO en eventDTO
   @PutMapping("/{id}")
   public EventDTO update(@PathVariable Long id, @RequestBody @Valid EventDTO event, Errors errors)
-      throws IdAndBodyNotMatchingOnUpdateException, RequestBodyNotValidException, NotFoundException {
+      throws IdAndBodyNotMatchingOnUpdateException, RequestBodyNotValidException, NotFoundException, OperationNotAllowed {
     if (errors.hasErrors()) {
       throw new RequestBodyNotValidException(errors);
     }
@@ -108,8 +109,8 @@ public class EventResource {
     }
     return eventService.update(event);
   }
-  */
 
+  
   @DeleteMapping("/{id}")
   public void delete(@PathVariable Long id) throws NotFoundException, OperationNotAllowed {
     eventService.deleteById(id);
