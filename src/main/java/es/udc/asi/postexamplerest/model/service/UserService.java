@@ -81,13 +81,14 @@ public class UserService {
 
     UserDTOPrivate currentUser = getCurrentUserWithAuthority();
     if (currentUser.getId().equals(user.getId())) {
-      throw new OperationNotAllowed("The user cannot activate/deactive itself");
+      throw new OperationNotAllowed("The user cannot activate/deactivate itself");
     }
 
     user.setActive(active);
     userDAO.update(user);
     return new UserDTOPublic(user);
   }
+
 
   public UserDTOPrivate getCurrentUserWithAuthority() {
     String currentUserLogin = SecurityUtils.getCurrentUserLogin();
@@ -97,6 +98,7 @@ public class UserService {
     return null;
   }
 
+  
   @PreAuthorize("hasAuthority('ADMIN')")
   @Transactional(readOnly = false)
   public void deleteById(Long id) throws NotFoundException, OperationNotAllowed {
