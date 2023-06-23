@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.udc.asi.postexamplerest.model.domain.Event;
+import es.udc.asi.postexamplerest.model.domain.Movie;
 import es.udc.asi.postexamplerest.model.domain.Category;
 import es.udc.asi.postexamplerest.model.domain.User;
 import es.udc.asi.postexamplerest.model.exception.UserLoginExistsException;
-import es.udc.asi.postexamplerest.model.repository.EventDao;
+import es.udc.asi.postexamplerest.model.repository.MovieDao;
 import es.udc.asi.postexamplerest.model.repository.CategoryDao;
 import es.udc.asi.postexamplerest.model.repository.UserDao;
 import es.udc.asi.postexamplerest.model.service.UserService;
@@ -25,7 +25,7 @@ public class DatabaseLoader {
   private UserService userService;
 
   @Autowired
-  private EventDao eventDAO;
+  private MovieDao movieDAO;
 
   @Autowired
   private CategoryDao categoryDAO;
@@ -56,36 +56,35 @@ public class DatabaseLoader {
     categoryDAO.create(cultural);
     categoryDAO.create(art);
     
-    Event event = new Event("football match", userDAO.findByLogin("pepe"));
-    event.setCategory(sports);
-    event.setDate(LocalDateTime.now());
-    eventDAO.create(event);
+    Movie movie = new Movie("football match", userDAO.findByLogin("pepe"));
+    movie.setCategory(sports);
+    movieDAO.create(movie);
     Thread.sleep(2000);
     
-    event = new Event("event 2", userDAO.findByLogin("maria"));
-    event.setCategory(cultural);
-    event.setDate(LocalDateTime.now());
-    eventDAO.create(event);
+    movie = new Movie("movie 2", userDAO.findByLogin("maria"));
+    movie.setCategory(cultural);
+//    movie.setDate(LocalDateTime.now());
+    movieDAO.create(movie);
     Thread.sleep(2000);
     
-    event = new Event("paintings expo", userDAO.findByLogin("maria"));
-    event.setCategory(art);
-    event.setDate(LocalDateTime.now().plusDays(1)); // fijar a mañana
-    eventDAO.create(event);
+    movie = new Movie("paintings expo", userDAO.findByLogin("maria"));
+    movie.setCategory(art);
+//    movie.setDate(LocalDateTime.now().plusDays(1)); // fijar a mañana
+    movieDAO.create(movie);
     Thread.sleep(2000);
     
-    event = new Event("event 4", userDAO.findByLogin("maria"));
-    event.setCategory(art);
-    eventDAO.create(event);
+    movie = new Movie("movie 4", userDAO.findByLogin("maria"));
+    movie.setCategory(art);
+    movieDAO.create(movie);
     Thread.sleep(2000);
     
-    event = new Event("event 5", userDAO.findByLogin("pepe"));
-    event.setCategory(art);
-    eventDAO.create(event);
+    movie = new Movie("movie 5", userDAO.findByLogin("pepe"));
+    movie.setCategory(art);
+    movieDAO.create(movie);
     Thread.sleep(2000);
     
-    event = new Event("event 6", userDAO.findByLogin("pepe"));
-    event.setCategory(art);
-    eventDAO.create(event);
+    movie = new Movie("movie 6", userDAO.findByLogin("pepe"));
+    movie.setCategory(art);
+    movieDAO.create(movie);
   }
 }
