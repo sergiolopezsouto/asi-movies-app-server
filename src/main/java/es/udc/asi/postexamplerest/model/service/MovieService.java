@@ -59,9 +59,9 @@ public class MovieService {
   
   public List<MovieDTO> findAll() {
     Stream<Movie> Movies = MovieDAO.findAll().stream();
-    if (!SecurityUtils.getCurrentUserIsAdmin()) {
-      Movies = Movies.filter(e -> e.getAuthor().isActive());
-    }
+	//    if (!SecurityUtils.getCurrentUserIsAdmin()) {
+	//      Movies = Movies.filter(e -> e.getAuthor().isActive());
+	//    }
     return Movies.map(Movie -> new MovieDTO(Movie)).collect(Collectors.toList());
   }
 
@@ -261,6 +261,18 @@ public class MovieService {
 	  }
 	  return user.getFavoriteMovies().contains(movie);
 	}
+  
+  
+  public List<MovieDTO> findFavoriteMovies(Long userId) throws NotFoundException {
+	    User user = userDAO.findById(userId);
+	    if (user == null) {
+	        throw new NotFoundException(userId.toString(), User.class);
+	    }
+	    return user.getFavoriteMovies().stream()
+	        .map(MovieDTO::new)
+	        .collect(Collectors.toList());
+	}
+
 
 
 

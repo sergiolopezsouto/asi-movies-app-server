@@ -58,7 +58,7 @@ public class SecurityConfiguration {
       .authorizeRequests()
       .antMatchers("/api/authenticate").permitAll()
       .antMatchers(HttpMethod.POST, "/api/register").permitAll()
-      .antMatchers(HttpMethod.GET, "/api/events/**").permitAll()
+      .antMatchers(HttpMethod.GET, "/api/movies/**").permitAll()
       .antMatchers(HttpMethod.GET, "/api/users/**").permitAll()
       .antMatchers(HttpMethod.GET, "/api/categories").permitAll()
       .antMatchers("/**").authenticated().and()

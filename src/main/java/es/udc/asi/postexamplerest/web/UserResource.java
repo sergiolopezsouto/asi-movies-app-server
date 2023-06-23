@@ -16,8 +16,9 @@ import es.udc.asi.postexamplerest.model.exception.NotFoundException;
 import es.udc.asi.postexamplerest.model.exception.OperationNotAllowed;
 import es.udc.asi.postexamplerest.model.service.MovieService;
 import es.udc.asi.postexamplerest.model.service.UserService;
+import es.udc.asi.postexamplerest.model.service.dto.MovieDTO;
 import es.udc.asi.postexamplerest.model.service.dto.UserDTOPublic;
-import es.udc.asi.postexamplerest.model.service.dto.UserDTOWithEvents;
+import es.udc.asi.postexamplerest.model.service.dto.UserDTOWithMovies;
 
 @RestController
 @RequestMapping("/api/users")
@@ -35,7 +36,7 @@ public class UserResource {
   }
 
   @GetMapping("/{id}")
-  public UserDTOWithEvents findOne(@PathVariable Long id) throws NotFoundException {
+  public UserDTOWithMovies findOne(@PathVariable Long id) throws NotFoundException {
     return userService.findById(id);
   }
 
@@ -69,6 +70,11 @@ public class UserResource {
   @GetMapping("/{userId}/favorites/{movieId}")
   public boolean isMovieFavorite(@PathVariable Long userId, @PathVariable Long movieId) throws NotFoundException {
     return movieService.isMovieFavorite(userId, movieId);
+  }
+  
+  @GetMapping("/{userId}/favorites")
+  public List<MovieDTO> getFavoriteMovies(@PathVariable Long userId) throws NotFoundException {
+    return movieService.findFavoriteMovies(userId);
   }
 
 }

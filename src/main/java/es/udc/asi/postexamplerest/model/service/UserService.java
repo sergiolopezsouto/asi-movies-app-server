@@ -18,7 +18,7 @@ import es.udc.asi.postexamplerest.model.exception.UserLoginExistsException;
 import es.udc.asi.postexamplerest.model.repository.UserDao;
 import es.udc.asi.postexamplerest.model.service.dto.UserDTOPrivate;
 import es.udc.asi.postexamplerest.model.service.dto.UserDTOPublic;
-import es.udc.asi.postexamplerest.model.service.dto.UserDTOWithEvents;
+import es.udc.asi.postexamplerest.model.service.dto.UserDTOWithMovies;
 import es.udc.asi.postexamplerest.security.SecurityUtils;
 
 @Service
@@ -39,12 +39,12 @@ public class UserService {
     return users.filter(user -> user.isActive()).collect(Collectors.toList());
   }
 
-  public UserDTOWithEvents findById(Long id) throws NotFoundException {
+  public UserDTOWithMovies findById(Long id) throws NotFoundException {
     User user = userDAO.findById(id);
     if (user == null || !user.isActive() && !SecurityUtils.getCurrentUserIsAdmin()) {
       throw new NotFoundException(id.toString(), User.class);
     }
-    return new UserDTOWithEvents(user);
+    return new UserDTOWithMovies(user);
   }
 
   @Transactional(readOnly = false)

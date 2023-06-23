@@ -5,21 +5,21 @@ import java.util.List;
 
 import es.udc.asi.postexamplerest.model.domain.User;
 
-public class UserDTOWithEvents {
+public class UserDTOWithMovies {
   private Long id;
   private String login;
   private boolean active = true;
-  private List<EventDTO> events = new ArrayList<>();
+  private List<MovieDTO> favoriteMovies = new ArrayList<>();
 
-  public UserDTOWithEvents() {
+  public UserDTOWithMovies() {
   }
 
-  public UserDTOWithEvents(User user) {
+  public UserDTOWithMovies(User user) {
     this.id = user.getId();
     this.login = user.getLogin();
     this.setActive(user.isActive());
-    user.getEvents().forEach(e -> {
-      this.events.add(new EventDTO(e));
+    user.getFavoriteMovies().forEach(e -> {
+      this.favoriteMovies.add(new MovieDTO(e));
     });
   }
 
@@ -47,11 +47,11 @@ public class UserDTOWithEvents {
     this.active = active;
   }
 
-  public List<EventDTO> getEvents() {
-    return events;
+  public List<MovieDTO> getFavoriteMovies() {
+	return favoriteMovies;
   }
 
-  public void setPosts(List<EventDTO> events) {
-    this.events = events;
+  public void setFavoriteMovies(List<MovieDTO> favoriteMovies) {
+	this.favoriteMovies = favoriteMovies;
   }
 }
