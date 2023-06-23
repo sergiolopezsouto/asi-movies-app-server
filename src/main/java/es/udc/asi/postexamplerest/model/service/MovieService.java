@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.udc.asi.postexamplerest.model.domain.Category;
+import es.udc.asi.postexamplerest.model.domain.Director;
 import es.udc.asi.postexamplerest.model.domain.Movie;
 import es.udc.asi.postexamplerest.model.domain.User;
 import es.udc.asi.postexamplerest.model.exception.ModelException;
@@ -22,6 +23,7 @@ import es.udc.asi.postexamplerest.model.exception.NotFoundException;
 import es.udc.asi.postexamplerest.model.exception.OperationNotAllowed;
 import es.udc.asi.postexamplerest.model.repository.MovieDao;
 import es.udc.asi.postexamplerest.model.repository.CategoryDao;
+import es.udc.asi.postexamplerest.model.repository.DirectorDao;
 import es.udc.asi.postexamplerest.model.repository.UserDao;
 import es.udc.asi.postexamplerest.model.service.dto.ImageDTO;
 import es.udc.asi.postexamplerest.model.service.dto.MovieDTO;
@@ -43,6 +45,9 @@ public class MovieService {
 
   @Autowired
   private CategoryDao categoryDAO;
+  
+  @Autowired
+  private DirectorDao directorDAO;
 
   @Autowired
   private UserService userService;
@@ -108,7 +113,7 @@ public class MovieService {
       // Configurar los demás campos de Movie
       bdMovie.setTitle(Movie.getTitle());
       bdMovie.setReleaseDate(Movie.getReleaseDate());
-      bdMovie.setDirector(Movie.getDirector());
+      // bdMovie.setDirector(Movie.getDirector());
       bdMovie.setSynopsis(Movie.getSynopsis());
       bdMovie.setTrailerUrl(Movie.getTrailerUrl());
       bdMovie.setDuration(Movie.getDuration());
@@ -119,6 +124,14 @@ public class MovieService {
           Category category = categoryDAO.findById(Movie.getCategory().getId());
           if (category != null) {
               bdMovie.setCategory(category);
+          }
+      }
+      
+      // Configurar el director si está presente en el DTO
+      if (Movie.getDirector() != null) {
+    	  Director director = directorDAO.findById(Movie.getDirector().getId());
+          if (director != null) {
+              bdMovie.setDirector(director);
           }
       }
 
@@ -170,7 +183,7 @@ public class MovieService {
 
     bdMovie.setTitle(Movie.getTitle());
     bdMovie.setReleaseDate(Movie.getReleaseDate());
-    bdMovie.setDirector(Movie.getDirector());
+//    bdMovie.setDirector(Movie.getDirector());
     bdMovie.setSynopsis(Movie.getSynopsis());
     bdMovie.setTrailerUrl(Movie.getTrailerUrl());
     bdMovie.setDuration(Movie.getDuration());
@@ -180,6 +193,16 @@ public class MovieService {
       Category category = categoryDAO.findById(Movie.getCategory().getId());
       if (category != null) {
         bdMovie.setCategory(category);
+      }
+    } else {
+      bdMovie.setCategory(null);
+    }
+    
+    // Configurar la categoría si está presente en el DTO
+    if (Movie.getDirector() != null) {
+      Director director = directorDAO.findById(Movie.getDirector().getId());
+      if (director != null) {
+        bdMovie.setDirector(director);
       }
     } else {
       bdMovie.setCategory(null);

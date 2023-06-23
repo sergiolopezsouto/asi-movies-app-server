@@ -7,26 +7,20 @@ import javax.validation.constraints.NotEmpty;
 import com.sun.istack.NotNull;
 
 import es.udc.asi.postexamplerest.model.domain.Category;
+import es.udc.asi.postexamplerest.model.domain.Director;
 import es.udc.asi.postexamplerest.model.domain.Movie;
 
 public class MovieDTO {
   private Long id;
   @NotEmpty
   private String title;
-  public String getTitle() {
-	return title;
-  }
 
-  public void setTitle(String title) {
-	this.title = title;
-  }
-
-@NotNull
+  @NotNull
   private UserDTOPublic author;
   private CategoryDTO category;
   private Number duration;
   private String categoryName;
-  private String director;
+  private DirectorDTO director;
   private String synopsis;
   private String trailerUrl;
   private Boolean hasImage = false;
@@ -46,13 +40,16 @@ public class MovieDTO {
 	        this.categoryName = movie.getCategory().getName();
 	        this.category = new CategoryDTO(movie.getCategory()); 
 	    }
+	    if (movie.getDirector() != null) {
+	        this.director = new DirectorDTO(movie.getDirector()); 
+	    }
 
 	    if (movie.getImagePath() != null) {
 	      this.hasImage = true;
 	    }
 
 	    this.releaseDate = movie.getReleaseDate();
-	    this.director = movie.getDirector(); 
+//	    this.director = movie.getDirector(); 
 	    this.trailerUrl = movie.getTrailerUrl(); 	    
 	    this.duration = movie.getDuration(); 
 	}
@@ -64,6 +61,14 @@ public class MovieDTO {
 
   public void setId(Long id) {
     this.id = id;
+  }
+  
+  public String getTitle() {
+	return title;
+  }
+
+  public void setTitle(String title) {
+	this.title = title;
   }
 
   public String getSynopsis() {
@@ -98,8 +103,12 @@ public class MovieDTO {
     return releaseDate;
   }
 
-  public String getDirector() {
+  public DirectorDTO getDirector() {
 	return director;
+  }
+  
+  public void setDirector(DirectorDTO director) {
+	this.director = director;
   }
   
   public String getTrailerUrl() {

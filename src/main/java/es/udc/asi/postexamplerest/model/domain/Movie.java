@@ -34,7 +34,10 @@ public class Movie {
   
   private String trailerUrl;
   
-  private String director;
+//  private String director;
+  
+  @ManyToOne(fetch = FetchType.LAZY, optional = true)
+  private Director director;
 
   private LocalDateTime releaseDate;
 
@@ -97,13 +100,21 @@ public void setTrailerUrl(String trailerUrl) {
 	this.trailerUrl = trailerUrl;
 }
 
-public String getDirector() {
-	return director;
-}
+//public String getDirector() {
+//	return director;
+//}
+//
+//public void setDirector(String director) {
+//	this.director = director;
+//}
 
-public void setDirector(String director) {
-	this.director = director;
-}
+public Director getDirector() {
+    return director;
+  }
+
+  public void setDirector(Director director) {
+    this.director = director;
+  }
 
 public LocalDateTime getReleaseDate() {
 	return releaseDate;

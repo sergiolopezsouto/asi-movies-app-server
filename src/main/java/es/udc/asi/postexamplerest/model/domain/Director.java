@@ -1,5 +1,6 @@
 package es.udc.asi.postexamplerest.model.domain;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -14,45 +15,42 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-public class Category {
+public class Director {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
-  @SequenceGenerator(name = "category_generator", sequenceName = "category_seq")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "director_generator")
+  @SequenceGenerator(name = "director_generator", sequenceName = "director_seq")
   private Long id;
 
-  @Column(unique = true)
   private String name;
 
-  @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+  private LocalDate birthDate;
+
+  private String imageUrl;
+
+  @OneToMany(mappedBy = "director", fetch = FetchType.LAZY)
   private Set<Movie> movies = new HashSet<>();
 
-  
-  
-  public Category() {
+  public Director() {
   }
 
-  public Category(String name) {
+  public Director(String name) {
     this.name = name;
   }
-  
-  
-  
+
   @Override
   public boolean equals(Object o) {
     if (this == o)
       return true;
     if (o == null || getClass() != o.getClass())
       return false;
-    Category category = (Category) o;
-    return id.equals(category.id);
+    Director director = (Director) o;
+    return id.equals(director.id);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id);
   }
-
-  
 
   public Long getId() {
     return id;
@@ -68,6 +66,22 @@ public class Category {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public LocalDate getBirthDate() {
+    return birthDate;
+  }
+
+  public void setBirthDate(LocalDate birthDate) {
+    this.birthDate = birthDate;
+  }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
   }
 
   public Set<Movie> getMovies() {
