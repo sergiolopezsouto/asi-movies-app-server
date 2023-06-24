@@ -23,6 +23,7 @@ public class Movie {
   @SequenceGenerator(name = "event_generator", sequenceName = "event_seq")
   private Long id;
   
+  @Column(length = 1000)
   private String imagePath;
   
   private String title;
